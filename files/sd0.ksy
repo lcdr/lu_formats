@@ -3,7 +3,7 @@ meta:
   file-extension: sd0
   endian: le
   imports:
-    - common
+    - ../common/common
 seq:
   - id: header
     contents: ['sd0', 0x01, 0xFF]
