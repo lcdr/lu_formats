@@ -2,6 +2,8 @@ meta:
   id: fev64
   file-extension: fev
   endian: le
+  imports:
+    - ../common/common
 seq:
   - id: file_type
     contents: "FEV1"
@@ -18,7 +20,7 @@ seq:
     repeat: expr
     repeat-expr: block_a_count
   - id: project_name
-    type: u4str
+    type: common::u4_str
   - id: bank_count
     type: u4
   - id: banks
@@ -54,26 +56,6 @@ seq:
   - id: music_data
     type: music_data
 types:
-  u4str:
-    seq:
-      - id: str_len
-        type: u4
-      - id: value
-        type: str
-        size: str_len
-        encoding: ascii
-  u2range:
-    seq:
-      - id: min
-        type: u2
-      - id: max
-        type: u2
-  u4range:
-    seq:
-      - id: min
-        type: u4
-      - id: max
-        type: u4
   block_a:
     seq:
       - id: id
@@ -92,11 +74,11 @@ types:
       - id: unknown_checksum
         size: 8
       - id: name
-        type: u4str
+        type: common::u4_str
   event_category:
     seq:
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: volume
         type: f4
       - id: pitch
@@ -122,7 +104,7 @@ types:
   event_group:
     seq:
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: user_property_count
         type: u4
       - id: user_properties
@@ -144,7 +126,7 @@ types:
   user_property:
     seq:
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: type
         type: u4
         enum: user_property_type
@@ -154,7 +136,7 @@ types:
           cases:
             'user_property_type::integer': u4
             'user_property_type::float': f4
-            'user_property_type::string': u4str
+            'user_property_type::string': common::u4_str
     enums:
       user_property_type:
         0: integer
@@ -167,7 +149,7 @@ types:
         type: u4
         enum: is_simple_event
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: guid
         size: 16
       - id: volume
@@ -275,7 +257,7 @@ types:
       - id: unknown9
         size: 4
       - id: category
-        type: u4str
+        type: common::u4_str
     enums:
       max_playback_behavior:
         1: steal_oldest
@@ -405,7 +387,7 @@ types:
       - id: unknown
         size: 4
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: unknown2a
         size: 4
       - id: unknown2b
@@ -438,7 +420,7 @@ types:
   event_parameter:
     seq:
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: velocity
         type: f4
       - id: minimum_value
@@ -474,8 +456,10 @@ types:
       - id: play_mode
         type: u4
         enum: play_mode
-      - id: spawn_time
-        type: u4range
+      - id: spawn_time_min
+        type: u4
+      - id: spawn_time_max
+        type: u4
       - id: maximum_spawned_sounds
         type: u4
       - id: volume
@@ -499,8 +483,10 @@ types:
         enum: pitch_randomization_behavior
       - id: threed_position_randomization
         type: f4
-      - id: trigger_delay
-        type: u2range
+      - id: trigger_delay_min
+        type: u2
+      - id: trigger_delay_max
+        type: u2
       - id: spawn_count
         type: u2
     enums:
@@ -520,7 +506,7 @@ types:
   sound_definition:
     seq:
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: config_index
         type: u4
       - id: waveform_count
@@ -570,9 +556,9 @@ types:
   wavetable_params:
     seq:
       - id: filename
-        type: u4str
+        type: common::u4_str
       - id: bank_name
-        type: u4str
+        type: common::u4_str
       - id: unknown
         size: 4
       - id: length_in_ms
@@ -580,7 +566,7 @@ types:
   reverb_definition:
     seq:
       - id: name
-        type: u4str
+        type: common::u4_str
       - id: master_level
         type: s4
         doc: 0 to -100, serialized as 0 to -10000 (ie, out to two decimal places then multiply by 100)
@@ -907,7 +893,7 @@ types:
   md_chunk_smp:
     seq:
       - id: bank_name
-        type: u4str
+        type: common::u4_str
       - id: index
         type: u4
   md_chunk_tlnd:
