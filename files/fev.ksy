@@ -609,8 +609,9 @@ types:
         type: common::u4_str
       - id: unknown
         size: 4
-      - id: length_in_ms
+      - id: length
         type: u4
+        doc: In milliseconds
   reverb_definition:
     seq:
       - id: name
