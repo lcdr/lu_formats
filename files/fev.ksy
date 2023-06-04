@@ -9,16 +9,18 @@ seq:
     contents: "FEV1"
   - id: version
     contents: [0x00, 0x00, 0x40, 0x00]
-  - id: unknown2
+  - id: unknown_checksum_1
     type: u4
-  - id: unknown3
+    doc: Tied to sound definitions and waveforms
+  - id: unknown_checksum_2
     type: u4
-  - id: block_a_count
+    doc: Tied to sound definitions and waveforms
+  - id: manifest_entry_count
     type: u4
-  - id: block_a_set
-    type: block_a
+  - id: manifest_entries
+    type: manifest_entry
     repeat: expr
-    repeat-expr: block_a_count
+    repeat-expr: manifest_entry_count
   - id: project_name
     type: common::u4_str
   - id: bank_count
@@ -56,12 +58,58 @@ seq:
   - id: music_data
     type: music_data
 types:
-  block_a:
+  manifest_entry:
     seq:
-      - id: id
+      - id: type
         type: u4
+        enum: manifest_type
       - id: value
         type: u4
+    enums:
+      manifest_type:
+        0x00:
+          id: unknown_0x00
+          doc: Always 1?
+        0x01: bank_count
+        0x02: event_category_count
+        0x03: event_group_count
+        0x04: user_property_count
+        0x05: event_parameter_count
+        0x06: effect_envelope_count
+        0x07: envelope_point_count
+        0x08: sound_instance_count
+        0x09:
+          id: layer_count
+          doc: Note this does not include the single layer of simple events
+        0x0A: simple_event_count
+        0x0B: complex_event_count
+        0x0C: reverb_definition_count
+        0x0D: waveform_wavetable_count
+        0x0E: waveform_oscillator_count
+        0x0F: waveform_dont_play_entry_count
+        0x10: waveform_programmer_sound_count
+        0x11: sound_definition_count
+        0x12:
+          id: unknown_0x12
+          doc: Always 0?
+        0x13: project_name_size
+        0x14: bank_names_total_size
+        0x15: event_category_names_total_size
+        0x16: event_group_names_total_size
+        0x17: user_property_names_total_size
+        0x18: user_property_string_values_total_size
+        0x19: event_parameter_names_total_size
+        0x1A: effect_envelope_names_total_size
+        0x1B: event_names_total_size
+        0x1C:
+          id: event_category_names_total_size
+          doc: Note that this is the serialized size, and the category names is serialized per event, so if multiple events contain a category, it is added multiple times, and if no events contain a category, the category does not contribute.
+        0x1D: reverb_definition_names_total_size
+        0x1E: wavetable_file_names_total_size
+        0x1F: wavetable_bank_names_total_size
+        0x20:
+          id: sound_definition_names_total_size
+          doc: Note that sound definition names are "paths" (a sound definition sd in folder f will have name /f/sd)
   bank:
     seq:
       # Decompress into memory --> 00 01 00 00
@@ -562,7 +610,7 @@ types:
       - id: unknown
         size: 4
       - id: length_in_ms
-        size: 4
+        type: u4
   reverb_definition:
     seq:
       - id: name
