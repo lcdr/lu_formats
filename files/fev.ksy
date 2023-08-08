@@ -102,7 +102,7 @@ types:
         0x1A: effect_envelope_names_total_size
         0x1B: event_names_total_size
         0x1C:
-          id: event_category_names_total_size
+          id: event_instance_category_names_total_size
           doc: Note that this is the serialized size, and the category names is serialized per event, so if multiple events contain a category, it is added multiple times, and if no events contain a category, the category does not contribute.
         0x1D: reverb_definition_names_total_size
         0x1E: wavetable_file_names_total_size
