@@ -838,8 +838,20 @@ types:
         type: u1
   client_packet_guild_data:
     seq:
-      - id: todo
-        type: u1
+      - id: uk1
+        type: b1
+      - id: guild_name
+        type: str
+        size: 31 * 2
+        encoding: utf-16le
+      - id: ukstr1
+        type: str
+        size: 11 * 2
+        encoding: utf-16le
+      - id: ukstr2
+        type: str
+        size: 11 * 2
+        encoding: utf-16le
   client_packet_guild_status:
     seq:
       - id: todo
